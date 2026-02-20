@@ -1,27 +1,30 @@
-// snak.js
+// snak.js - UPGRADED SNAK INTERPRETER
 class SnakObject {
     constructor(name) {
         this.name = name;
         this.snakked = false;
         this.snakkable = true;
     }
+
     snak() {
-        if(this.snakkable){
+        if (this.snakkable) {
             this.snakked = true;
             console.log(`${this.name} has been SNAAAKKED 🍬`);
         } else {
-            console.log(`${this.name} is not snakkable ❌`);
+            console.error(`${this.name} is not snakkable ❌`);
         }
     }
+
     unsnak() {
-        if(this.snakked){
+        if (this.snakked) {
             this.snakked = false;
             console.log(`${this.name} has been UNSNAKKED 😌`);
         } else {
-            console.log(`${this.name} was not snakked`);
+            console.error(`${this.name} was not snakked ❌`);
         }
     }
-    IsSnakked(){
+
+    IsSnakked() {
         return this.snakked;
     }
 }
@@ -33,30 +36,40 @@ const snakObjects = {};
 function runSnak(code) {
     const lines = code.split('\n');
 
-    lines.forEach(line => {
+    lines.forEach((line, index) => {
+        const lineNum = index + 1;
         line = line.trim();
-        if(line.length === 0) return;
+
+        if (line.length === 0) return; // skip empty lines
 
         // create object
-        const matchCreate = line.match(/^newSnak\("(\w+)"\)/);
-        if(matchCreate){
+        const matchCreate = line.match(/^newSnak\("([A-Za-z]\w*)"\)$/);
+        if (matchCreate) {
             const name = matchCreate[1];
-            snakObjects[name] = new SnakObject(name);
-            console.log(`${name} created as a snackable object 🦌`);
+            if (snakObjects[name]) {
+                console.warn(`Line ${lineNum}: ${name} already exists, skipping creation ⚠️`);
+            } else {
+                snakObjects[name] = new SnakObject(name);
+                console.log(`Line ${lineNum}: ${name} created as a snackable object 🦌`);
+            }
             return;
         }
 
         // snak or unsnak
-        const matchAction = line.match(/^(\w+):(snak|unsnak)\(\)/);
-        if(matchAction){
+        const matchAction = line.match(/^([A-Za-z]\w*):(snak|unsnak)\(\)$/);
+        if (matchAction) {
             const objName = matchAction[1];
             const action = matchAction[2];
-            if(snakObjects[objName]){
-                snakObjects[objName][action]();
+
+            if (!snakObjects[objName]) {
+                console.error(`Line ${lineNum}: Object "${objName}" does not exist ❌`);
             } else {
-                console.log(`${objName} does not exist ❌`);
+                snakObjects[objName][action]();
             }
             return;
         }
+
+        // if we reach here, the command is invalid
+        console.error(`Line ${lineNum}: Invalid command -> "${line}" ❌`);
     });
 }
