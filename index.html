@@ -2,18 +2,87 @@
 <html>
 <head>
   <title>🍬 SNAK LANGUAGE RUNNER 🍬</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: linear-gradient(120deg, #ffeaa7, #fab1a0);
+      color: #2d3436;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px #d63031;
+    }
+    textarea {
+      width: 80%;
+      max-width: 600px;
+      height: 150px;
+      font-family: monospace;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #d63031;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+      resize: none;
+    }
+    button {
+      margin-top: 10px;
+      font-size: 18px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: #fd79a8;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background-color: #e84393;
+      transform: scale(1.05);
+    }
+    #output {
+      margin-top: 20px;
+      width: 80%;
+      max-width: 600px;
+      height: 200px;
+      background-color: #dfe6e9;
+      border: 2px solid #00b894;
+      border-radius: 10px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 16px;
+      overflow-y: auto;
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
   <h1>🍬 SNAK LANGUAGE RUNNER 🍬</h1>
-  <textarea id="snakCode" rows="10" cols="50">
+  
+  <textarea id="snakCode">
 newSnak("BB")
 BB:snak()
 newSnak("Firey")
 Firey:snak()
 BB:unsnak()
   </textarea><br>
+  
   <button onclick="runSnak(document.getElementById('snakCode').value)">RUN SNAK!</button>
 
+  <div id="output">🍬 Output window 🍬</div>
+
   <script src="snak.js"></script>
+  <script>
+    // override console.log to also show in output window
+    const originalLog = console.log;
+    console.log = function(message){
+      originalLog(message);
+      const out = document.getElementById("output");
+      out.innerHTML += message + "<br>";
+      out.scrollTop = out.scrollHeight;
+    };
+  </script>
 </body>
 </html>
