@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🍬 SNAK LANGUAGE RUNNER 🍬</title>
+</head>
+<body>
+  <h1>🍬 SNAK LANGUAGE RUNNER 🍬</h1>
+  <textarea id="snakCode" rows="10" cols="50">
+newSnak("BB")
+BB:snak()
+newSnak("Firey")
+Firey:snak()
+BB:unsnak()
+  </textarea><br>
+  <button onclick="runSnak(document.getElementById('snakCode').value)">RUN SNAK!</button>
+
+  <script src="snak.js"></script>
+</body>
+</html>
